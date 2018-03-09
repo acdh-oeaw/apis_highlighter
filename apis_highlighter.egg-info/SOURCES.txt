@@ -15,6 +15,9 @@ apis_highlighter/urls.py
 apis_highlighter/views.py
 apis_highlighter.egg-info/PKG-INFO
 apis_highlighter.egg-info/SOURCES.txt
+apis_highlighter.egg-info/bower.json
 apis_highlighter.egg-info/dependency_links.txt
 apis_highlighter.egg-info/requires.txt
 apis_highlighter.egg-info/top_level.txt
+apis_highlighter/static/apis_highlighter/apis_highlighter.js
+apis_highlighter/templates/apis_highlighter/calculate_agreement.html

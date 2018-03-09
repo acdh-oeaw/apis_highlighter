@@ -10,7 +10,9 @@ Description-Content-Type: UNKNOWN
 Description: Readme
         ======
         
-        This is the core package of the APIS framework. It contains the basic models (entities, relations etc)
+        This is the highlighter package for the APIS framework. It allows to highlighter and
+        annotate texts.
+        
 Platform: UNKNOWN
 Classifier: Environment :: Web Environment
 Classifier: Framework :: Django
