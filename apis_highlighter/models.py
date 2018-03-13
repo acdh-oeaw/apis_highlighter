@@ -222,3 +222,24 @@ class MenuEntry(models.Model):
 
     class Meta:
         db_table = 'highlighter_menuentry'
+
+
+#######################################################################
+#
+# DL-Classes
+#
+#######################################################################
+
+
+class ActiveLearningProject(models.Model):
+    """Used to store active learning project settings.
+    """
+    choices = ((''))
+    name = models.CharField(max_length=255)
+    sampling_strategy = models.CharField(max_length=4, choices=choices)
+    rebuild = models.IntegerField()
+    collection = models
+    log_dir = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'highlighter_activelearningproject'
