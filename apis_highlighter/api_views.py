@@ -169,3 +169,9 @@ class TestDLModel(APIView):
         res = test_model(model, text)
         print(res)
         return Response({'data': res})
+
+
+class ActiveLearningView(APIView):
+
+    def get(self, request, format=None):
+        al_project = request.query_params.get('al_project', None)

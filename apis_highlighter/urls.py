@@ -1,8 +1,10 @@
 from django.conf.urls import url
 from django.conf import settings
 
+app_name = "apis_highlighter"
+
 urlpatterns = []
 
 if 'annotator agreement' in getattr(settings, "APIS_COMPONENTS", []):
-    from highlighter.views import ComputeAgreement
+    from apis_highlighter.views import ComputeAgreement
     urlpatterns.append(url(r'^agreement/$', ComputeAgreement.as_view(), name='agreement'))
