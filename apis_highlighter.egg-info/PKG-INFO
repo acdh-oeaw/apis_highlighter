@@ -1,12 +1,11 @@
 Metadata-Version: 1.1
 Name: apis-highlighter
-Version: 0.8
+Version: 0.8.4
 Summary: Addon to APIS webapplication that allows to annotate texts
 Home-page: https://www.apis.acdh.oeaw.ac.at/
 Author: Matthias Schlögl
 Author-email: matthias.schloegl@oeaw.ac.at
 License: MIT License
-Description-Content-Type: UNKNOWN
 Description: Readme
         ======
         

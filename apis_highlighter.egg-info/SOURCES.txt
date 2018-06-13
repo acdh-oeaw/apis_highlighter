@@ -3,6 +3,7 @@ MANIFEST.in
 README.rst
 setup.py
 apis_highlighter/__init__.py
+apis_highlighter/active_learning.py
 apis_highlighter/admin.py
 apis_highlighter/api_views.py
 apis_highlighter/apps.py

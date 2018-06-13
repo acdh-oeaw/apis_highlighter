@@ -25,7 +25,7 @@ bower_json = {
 
 setup(
     name='apis-highlighter',
-    version='0.8',
+    version='0.8.4',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',  # example license
@@ -50,14 +50,14 @@ setup(
     ],
     install_requires=[
         'calmjs.bower',
-        'Django==1.11.10',
-        'django-autocomplete-light==3.2.10',
-        'django-crispy-forms==1.7.0',
-        'django-filter==1.0.4',
-        'django-tables2==1.12.0',
-        'djangorestframework==3.6.2',
-        'djangorestframework-csv==2.0.0',
-        'djangorestframework-xml==1.3.0',
+        'Django>=2.0',
+        'django-autocomplete-light>=3.2.10',
+        'django-crispy-forms>=1.7.0',
+        'django-filter>=1.0.4',
+        'django-tables2>=1.12.0',
+        'djangorestframework>=3.6.2',
+        'djangorestframework-csv>=2.0.0',
+        'djangorestframework-xml>=1.3.0',
     ],
     bower_json=bower_json,
 )
