@@ -16,7 +16,7 @@ class ComputeAgreement(View):
 
     def get(self, request):
         form = SelectAnnotatorAgreementCollection()
-        return render(request, 'calculate_agreement.html', {'form': form})
+        return render(request, 'apis_highlighter/calculate_agreement.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = SelectAnnotatorAgreementCollection(request.POST)
@@ -48,5 +48,5 @@ class ComputeAgreement(View):
                 txt, ann_proj_pk, user_group,
                 gold_standard=gold_standard, metrics=metrics,
                 combine=True, format_string=format_string).get_html_table()
-            return render(request, 'calculate_agreement.html', {
+            return render(request, 'apis_highlighter/calculate_agreement.html', {
                 'form': form, 'tab1': tab1, 'tab2': tab2, 'title1': title1})

@@ -25,7 +25,7 @@ bower_json = {
 
 setup(
     name='apis-highlighter',
-    version='0.8.4',
+    version='0.8.5',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',  # example license
