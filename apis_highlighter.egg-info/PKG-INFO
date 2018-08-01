@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: apis-highlighter
-Version: 0.8.5
+Version: 0.8.6
 Summary: Addon to APIS webapplication that allows to annotate texts
 Home-page: https://www.apis.acdh.oeaw.ac.at/
 Author: Matthias Schlögl
@@ -16,7 +16,7 @@ Description: Readme
 Platform: UNKNOWN
 Classifier: Environment :: Web Environment
 Classifier: Framework :: Django
-Classifier: Framework :: Django :: 1.11
+Classifier: Framework :: Django :: 2.0
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
