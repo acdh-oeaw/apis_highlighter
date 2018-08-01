@@ -55,11 +55,12 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
 
 function highlight_detail(event) {
         //
-        var ann_id = $(this).data('hl-ann-id')
-        var entity_class = $(this).data('entity-class').toLowerCase().replace("{{ entity_type }}".toLowerCase(), '')
+	
+        var entity_type = $(this).data('entity-type');
+        var ann_id = $(this).data('hl-ann-id');
+        var entity_class = $(this).data('entity-class').toLowerCase().replace($.ApisHigh.vars.entity_type.toLowerCase(), '');
         var entity_class_rel = $(this).data('entity-class').substr(0,1).toLowerCase() + $(this).data('entity-class').substr(1);
         var entity_pk_rel =  $(this).data('entity-pk')
-        var entity_type = $(this).data('entity-type')
 
         if (entity_type == 'relations') {
             var entity_pk_lst = $(this).data('related-entity-pk').split(',')

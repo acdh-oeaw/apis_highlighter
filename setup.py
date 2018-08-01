@@ -25,7 +25,7 @@ bower_json = {
 
 setup(
     name='apis-highlighter',
-    version='0.8.5',
+    version='0.8.6',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',  # example license
@@ -37,7 +37,7 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.11',  # replace "X.Y" as appropriate
+        'Framework :: Django :: 2.0',  # replace "X.Y" as appropriate
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',  # example license
         'Operating System :: OS Independent',
