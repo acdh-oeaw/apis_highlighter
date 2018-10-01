@@ -170,6 +170,8 @@ class Annotation(models.Model):
             entity_kind = str(rel_entity.relation_type.pk)
         elif hasattr(rel_entity, 'kind'):
             entity_kind = str(rel_entity.kind.pk)
+        else:
+            entity_kind = str(0)
         entity_type = type(rel_entity).__name__
         entity_type_app = ContentType.objects.get(model=entity_type).app_label
         ent_lst_pk = []
