@@ -73,33 +73,33 @@ class Annotation(models.Model):
     set_highlighter = getattr(
         settings,
         'APIS_HIGHLIGHTER_ENTITIES',
-        ('entities.Person',
-            'entities.Institution',
-            'entities.Place',
-            'entities.Event',
-            'entities.Work',
-            'relations.PersonPerson',
-            'relations.PersonPlace',
-            'relations.PersonInstitution',
-            'relations.PersonEvent',
-            'relations.PersonWork',
-            'relations.InstitutionPlace',
-            'relations.InstitutionEvent',
-            'relations.InstitutionWork',
-            'relations.InstitutionInstitution',
-            'relations.PlaceEvent',
-            'relations.PlaceWork',
-            'relations.PlacePlace',
-            'relations.EventWork',
-            'relations.EventEvent',
-            'relations.WorkWork'))
+        ('apis_entities.Person',
+            'apis_entities.Institution',
+            'apis_entities.Place',
+            'apis_entities.Event',
+            'apis_entities.Work',
+            'apis_relations.PersonPerson',
+            'apis_relations.PersonPlace',
+            'apis_relations.PersonInstitution',
+            'apis_relations.PersonEvent',
+            'apis_relations.PersonWork',
+            'apis_relations.InstitutionPlace',
+            'apis_relations.InstitutionEvent',
+            'apis_relations.InstitutionWork',
+            'apis_relations.InstitutionInstitution',
+            'apis_relations.PlaceEvent',
+            'apis_relations.PlaceWork',
+            'apis_relations.PlacePlace',
+            'apis_relations.EventWork',
+            'apis_relations.EventEvent',
+            'apis_relations.WorkWork'))
     status_choices = (('del', 'deleted'), ('ap', 'approved'))
     start = models.PositiveIntegerField()   # number of string to start highlight
     end = models.PositiveIntegerField()     # number of string to end highlight
     entity_link = GM2MField(*set_highlighter)  # generic field to store the relation object
-    entity_candidate = models.ManyToManyField('metainfo.UriCandidate', blank=True)
+    entity_candidate = models.ManyToManyField('apis_metainfo.UriCandidate', blank=True)
     orig_string = models.CharField(max_length=255, blank=True, null=True)    # string originally highlighted
-    text = models.ForeignKey('metainfo.Text', on_delete=models.CASCADE)
+    text = models.ForeignKey('apis_metainfo.Text', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', related_name='parent_annotation',
                                blank=True, null=True,
                                on_delete=models.SET_NULL)    #parent annotations are used to allow for a stacked design of the annotation project

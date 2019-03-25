@@ -6,11 +6,13 @@ from crispy_forms.layout import Submit
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User, Group
 from django.db.models.fields import BLANK_CHOICE_DASH
+from apis_core.apis_entities.fields import ModelSelect2
+
 
 #from relations.forms import PersonPlaceForm, PersonInstitutionForm
-from metainfo.models import Collection
+from apis_core.apis_metainfo.models import Collection
 from .models import AnnotationProject
-from vocabularies.models import TextType
+from apis_core.apis_vocabularies.models import TextType
 from dal import autocomplete
 
 
@@ -27,7 +29,7 @@ class SelectAnnotationProject(forms.Form):
     #show_all = forms.BooleanField(label='Show all?')
 
     def __init__(self, *args, **kwargs):
-        choices_type = ContentType.objects.filter(app_label__in=['Entities', 'Relations']).values_list('pk', 'model')
+        choices_type = ContentType.objects.filter(app_label__in=['apis_entities', 'apis_relations']).values_list('pk', 'model')
         set_ann_proj = kwargs.pop('set_ann_proj', False)
         entity_types_highlighter = kwargs.pop('entity_types_highlighter', False)
         users_show = kwargs.pop('users_show_highlighter', False)
@@ -205,7 +207,7 @@ class PlaceHighlighterForm(BaseEntityHighlighterForm):
 
 
 class PlaceEntityHighlighterForm(forms.Form):
-    place = forms.CharField(label='Place', widget=autocomplete.ModelSelect2(url='autocomplete/place'))
+    place = forms.CharField(label='Place', widget=ModelSelect2(url='autocomplete/place'))
     place_uri = forms.CharField(required=False, widget=forms.HiddenInput())
     HL_start = forms.IntegerField(widget=forms.HiddenInput)
     HL_end = forms.IntegerField(widget=forms.HiddenInput)

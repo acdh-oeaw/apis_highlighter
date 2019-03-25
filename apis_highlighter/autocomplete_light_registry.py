@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import autocomplete_light.shortcuts as al
 from django.utils.encoding import force_text
-from vocabularies.models import (PersonInstitutionRelation, PersonPersonRelation, PersonPlaceRelation,
+from apis_core.apis_vocabularies.models import (PersonInstitutionRelation, PersonPersonRelation, PersonPlaceRelation,
                                  PersonEventRelation, InstitutionEventRelation, PlaceEventRelation,
                                  RelationBaseClass, VocabsBaseClass, InstitutionInstitutionRelation,
                                  InstitutionPlaceRelation, PersonWorkRelation, InstitutionWorkRelation,

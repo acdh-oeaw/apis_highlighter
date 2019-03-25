@@ -14,12 +14,12 @@ from .serializer import (
     menuentrySerializer, highlightText, vocabapiSerializer, annotationSerializer,
     highlightTextTEI
 )
-from metainfo.models import Text
-from metainfo.api_renderers import TEIBaseRenderer
-from helper_functions.inter_annotator_agreement import InternalDataAgreement
+from apis_core.apis_metainfo.models import Text
+from apis_core.apis_metainfo.api_renderers import TEIBaseRenderer
+from apis_core.helper_functions.inter_annotator_agreement import InternalDataAgreement
 
 if 'deep learning' in getattr(settings, "APIS_COMPONENTS", []):
-    from helper_functions.dl_models import test_model
+    from apis_core.helper_functions.dl_models import test_model
 
 
 
@@ -121,12 +121,12 @@ class AnnotatorAgreementView(APIView):
         collection = request.query_params.get('collection', None)
         ann_proj_pk = self.request.session['annotation_project']
         if instance:
-            entity = ContentType.objects.get(app_label='entities',
+            entity = ContentType.objects.get(app_label='apis_entities',
                                              model=kind_instance).get_object_for_this_type(pk=instance)
             data = InternalDataAgreement(entity, ann_proj_pk,
                                          metrics=metrics, user_group=user_group, gold_standard=gold_standard)
         elif collection:
-            entity = ContentType.objects.get(app_label='entities',
+            entity = ContentType.objects.get(app_label='apis_entities',
                                              model=kind_instance).model_class()
             txts = Text.objects.filter(tempentityclass__in=entity.filter(collection_id=collection))
             data = InternalDataAgreement(txts, ann_proj_pk,

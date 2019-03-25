@@ -3,9 +3,9 @@ from .models import Annotation, Project, TextHigh, MenuEntry, VocabularyAPI
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from helper_functions.highlighter import highlight_text, highlight_textTEI
+from apis_core.helper_functions.highlighter import highlight_text, highlight_textTEI
 
-from vocabularies.serializers import UserAccSerializer
+from apis_core.apis_vocabularies.serializers import UserAccSerializer
 
 
 class JSONResponse(HttpResponse):

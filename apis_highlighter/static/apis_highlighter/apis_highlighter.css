@@ -1,0 +1,88 @@
+div.txt {
+    line-height: 2em;
+}
+
+[data-entity-class] {
+    line-height: 1;
+    display: inline-block;
+    background: transparent;
+    padding: 0 0.15em 0.15em 0.15em;
+    position: relative;
+    cursor: help;
+    border-bottom: 3px solid;
+    white-space: pre;
+}
+
+[data-entity-class]:after {
+    box-sizing: border-box;
+    content: attr(data-user-added) '*' attr(data-entity-class);
+    line-height: 1;
+    display: inline-block;
+    font-size: 0.65em;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: -1.5em;
+    left: 0;
+    -webkit-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
+}
+
+[data-entity-class="PersonPlace"] ~ [data-entity-class="PersonPlace"]:after {
+    opacity: 0;
+}
+
+[data-entity-class="PersonPlace"] ~ [data-entity-class="PersonPlace"]:hover:after {
+    opacity: 1;
+}
+
+[data-entity-class="PersonInstitution"] ~ [data-entity-class="PersonInstitution"]:after {
+    opacity: 0;
+}
+
+[data-entity-class="PersonInstitution"] ~ [data-entity-class="PersonInstitution"]:hover:after {
+    opacity: 1;
+}
+
+[data-entity-class="PersonPerson"] ~ [data-entity-class="PersonPerson"]:after {
+    opacity: 0;
+}
+
+[data-entity-class="PersonPerson"] ~ [data-entity-class="PersonPerson"]:hover:after {
+    opacity: 1;
+}
+
+[data-entity-class][data-entity-class="PersonPlace"] {
+  border-bottom-color: #394bf4;
+}
+
+[data-entity-class][data-entity-class="PersonPlace"]:after {
+  color: #394bf4;
+}
+
+[data-entity-class][data-entity-class="PersonInstitution"] {
+  border-bottom-color: hsla(120, 100%, 50%, 0.8);
+}
+
+[data-entity-class][data-entity-class="PersonInstitution"]:after {
+  color: hsla(120, 100%, 50%, 0.8);
+}
+
+[data-entity-class][data-entity-class="PersonPerson"] {
+  border-bottom-color: hsla(356, 86%, 50%, 0.8);
+}
+
+[data-entity-class][data-entity-class="PersonPerson"]:after {
+  color: hsla(356, 86%, 50%, 0.8);
+}
+
+mark.hl_text_complex {
+    border-bottom-color: hsla(57, 100%, 55%, 0.87);
+    cursor: help;
+}
+
+mark.complex:after {
+    color: hsla(57, 100%, 55%, 0.87);
+}
+
+
