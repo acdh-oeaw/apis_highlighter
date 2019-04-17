@@ -16,7 +16,6 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
                 $.ApisHigh.tt_instance_detail.content(data.form)
                     }
                 $(".form.ajax_form").unbind()
-                unbind_ajax_forms();
 
                 $('#id_HL_start').val($.ApisHigh.selected_text.start);
                 $('#id_HL_end').val($.ApisHigh.selected_text.end);
@@ -27,6 +26,7 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
         ButtonText = 'create/modify';
         };
         if (ObjectID === undefined) {
+		console.log('objct id false')
         ObjectID = false;
         var FormName2 = FormName.replace('HighlighterForm', 'Form');
         if ($.ApisForms[FormName2+'_'+$.ApisHigh.vars.entity_type]) {
@@ -36,8 +36,24 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
           new_data.form = new_data.form
               .replace(new RegExp(FormName2, 'g'), FormName);
           add_form_highl(new_data, false);
-        };
         } else {
+	console.log('form not found')
+
+        $.ajax({
+                type: 'POST',
+                url: $.ApisHigh.vars.urls.get_form_ajax,
+                beforeSend: function(request) {
+                  var csrftoken = getCookie('csrftoken');
+                    request.setRequestHeader("X-CSRFToken", csrftoken);
+                  },
+                data: {'FormName':FormName,'SiteID':$.ApisHigh.vars.instance_pk,'ObjectID':ObjectID,'ButtonText':ButtonText, 'entity_type': $.ApisHigh.vars.entity_type},
+                success: function(data) {
+                    add_form_highl(data, true);
+                }
+            })
+	};
+        } else {
+	console.log('posting to form endpoint')
         $.ajax({
                 type: 'POST',
                 url: $.ApisHigh.vars.urls.get_form_ajax,
@@ -137,7 +153,8 @@ function unbind_ann_agreement_form() {
 
 function activate_context_menu_highlighter() {
   $("body").on("click", "a.con-menu-item", function(event){
-            event.stopPropagation();
+          console.log('clicked');  
+	  event.stopPropagation();
            var endpoint = $(this).data('endpoint');
            GetFormAjaxHighl(endpoint);
         });

@@ -7,13 +7,16 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User, Group
 from django.db.models.fields import BLANK_CHOICE_DASH
 from apis_core.apis_entities.fields import ModelSelect2
+from django.urls import reverse
+from apis_core.apis_entities.fields import ListSelect2
 
 
 #from relations.forms import PersonPlaceForm, PersonInstitutionForm
 from apis_core.apis_metainfo.models import Collection
-from .models import AnnotationProject
+from .models import AnnotationProject, Annotation
 from apis_core.apis_vocabularies.models import TextType
 from dal import autocomplete
+from django.conf import settings
 
 
 
@@ -29,7 +32,9 @@ class SelectAnnotationProject(forms.Form):
     #show_all = forms.BooleanField(label='Show all?')
 
     def __init__(self, *args, **kwargs):
-        choices_type = ContentType.objects.filter(app_label__in=['apis_entities', 'apis_relations']).values_list('pk', 'model')
+        choices_type = getattr(settings, 'APIS_HIGHLIGHTER_MODELS', None)
+        if choices_type is None:
+            choices_type = ContentType.objects.filter(app_label__in=['apis_entities', 'apis_relations']).values_list('pk', 'model')
         set_ann_proj = kwargs.pop('set_ann_proj', False)
         entity_types_highlighter = kwargs.pop('entity_types_highlighter', False)
         users_show = kwargs.pop('users_show_highlighter', False)
@@ -120,7 +125,7 @@ class BaseEntityHighlighterForm(forms.Form):
 
     def save(self, *args, **kwargs):
         cd = self.cleaned_data
-        txt = Text.objects.get(pk=cd['HL_text_id'][5:])
+        txt = ContentType.objects.get(app_label='apis_metainfo', model='text').model_class().objects.get(pk=cd['HL_text_id'][5:])
         if cd['HL_id']:
             a = Annotation.objects.get(pk=cd['HL_id'])
             a.user_added = self.request.user
@@ -204,6 +209,34 @@ class PlaceHighlighterForm(BaseEntityHighlighterForm):
             ent = a.entity_link.all()[0]
             self.fields['place'].initial = ent.name
             self.fields['place_uri'].initial = Uri.objects.filter(entity=ent)[0].uri
+
+
+class SundayHighlighterForm(BaseEntityHighlighterForm):
+
+    def save(self, *args, **kwargs):
+        x = super(SundayHighlighterForm, self).save(*args, **kwargs)
+        cd = self.cleaned_data
+        p = ContentType.objects.get(app_label='apis_vocabularies', model='sundayrepresentations').model_class().objects.get(pk=cd['sunday_rep'])
+        x.entity_link.add(p)
+        return p
+
+    def __init__(self, *args, **kwargs):
+        super(SundayHighlighterForm, self).__init__(*args, **kwargs)
+        attrs = {'data-placeholder': 'Type to get suggestions',
+                 'data-minimum-input-length': 3,
+                 'data-html': True,
+                 'style': 'width: 100%'}
+        self.fields['sunday_rep'] = autocomplete.Select2ListCreateChoiceField(
+                label='Relation type',
+                widget=ListSelect2(
+                    #url='/vocabularies/autocomplete/{}{}relation/normal'.format(lst_src_target[0].lower(), lst_src_target[1].lower()),
+                    url=reverse('apis:apis_vocabularies:generic_vocabularies_autocomplete', args=['sundayrepresentations', 'normal']),
+                    attrs=attrs))
+
+        if self.instance:
+            a = self.instance
+            ent = a.entity_link.all()[0]
+            self.fields['sunday_rep'].initial = (ent.pk, ent.name)
 
 
 class PlaceEntityHighlighterForm(forms.Form):

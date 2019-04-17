@@ -92,7 +92,8 @@ class Annotation(models.Model):
             'apis_relations.PlacePlace',
             'apis_relations.EventWork',
             'apis_relations.EventEvent',
-            'apis_relations.WorkWork'))
+            'apis_relations.WorkWork',
+        ))
     status_choices = (('del', 'deleted'), ('ap', 'approved'))
     start = models.PositiveIntegerField()   # number of string to start highlight
     end = models.PositiveIntegerField()     # number of string to end highlight
