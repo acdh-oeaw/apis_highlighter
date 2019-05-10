@@ -334,6 +334,7 @@ function init_apis_highlighter(project_id, entity_id) {
             contentAsHTML: true,
             interactive: true,
             zIndex: 999,
+	    maxWidth: 600,
             trigger: 'click',
             theme: 'tooltipster-light',
             side: ['bottom'],
@@ -342,7 +343,8 @@ function init_apis_highlighter(project_id, entity_id) {
             //console.log(position);
             position.coord.top = ($.ApisHigh.selected_text.rect.top + (position.distance + $.ApisHigh.selected_text.rect.height));
             position.coord.left = ($.ApisHigh.selected_text.rect.left - ((position.size.width/2)-($.ApisHigh.selected_text.rect.width/2)));
-            position.target = $.ApisHigh.selected_text.rect.left + ($.ApisHigh.selected_text.rect.width/2);
+		if (position.coord.left < 0) {position.coord.left = 10};
+	    position.target = $.ApisHigh.selected_text.rect.left + ($.ApisHigh.selected_text.rect.width/2);
             position.size.height = 'auto';
             //console.log(position.target)
             return position;
