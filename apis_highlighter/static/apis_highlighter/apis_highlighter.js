@@ -340,10 +340,12 @@ function init_apis_highlighter(project_id, entity_id) {
             side: ['bottom'],
 
         functionPosition: function(instance, helper, position){
-            //console.log(position);
             position.coord.top = ($.ApisHigh.selected_text.rect.top + (position.distance + $.ApisHigh.selected_text.rect.height));
             position.coord.left = ($.ApisHigh.selected_text.rect.left - ((position.size.width/2)-($.ApisHigh.selected_text.rect.width/2)));
+		console.log(helper)
 		if (position.coord.left < 0) {position.coord.left = 10};
+		let w_1 = helper.geo.origin.size.width;
+		if (w_1 - (position.coord.left + position.size.width) - 10 < 0) { position.coord.left = w_1 - position.size.width +10 }
 	    position.target = $.ApisHigh.selected_text.rect.left + ($.ApisHigh.selected_text.rect.width/2);
             position.size.height = 'auto';
             //console.log(position.target)
