@@ -174,7 +174,7 @@ class Annotation(models.Model):
         else:
             entity_kind = str(0)
         entity_type = type(rel_entity).__name__
-        entity_type_app = ContentType.objects.get(model=entity_type).app_label
+        entity_type_app = ContentType.objects.get(model=entity_type.lower()).app_label
         ent_lst_pk = []
         user_added = self.user_added.username[:2]
         if entity_type_app.lower() == 'relations':
