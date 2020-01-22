@@ -78,7 +78,7 @@ function highlight_detail(event) {
         var entity_class_rel = $(this).data('entity-class').substr(0,1).toLowerCase() + $(this).data('entity-class').substr(1);
         var entity_pk_rel =  $(this).data('entity-pk')
 
-        if (entity_type == 'relations') {
+        if (entity_type == 'apis_relations') {
             var entity_pk_lst = $(this).data('related-entity-pk').split(',')
 
         if(entity_pk_lst.length == 2) {
@@ -90,9 +90,9 @@ function highlight_detail(event) {
         }}
         var html = '<div class="card list-group" id="accordion2">'
         html += '<a class="list-group-item" onclick=DeleteTempEntity("'+ann_id+'","HLAnnotation")>Delete Annotation</a>'
-        if (entity_type == 'relations') {
-        html += '<a class="list-group-item" onclick=DeleteAnnTempEntity("'+ann_id+'","'+entity_class_rel+'","'+entity_pk_rel+'")>Delete Complete</a>'
-        html += '<a class="list-group-item" href="/entities/entity/'+entity_class+'/'+entity_pk+'/edit">Goto entity</a>'
+        if (entity_type == 'apis_relations') {
+        html += '<a class="list-group-item" onclick=DeleteAnnTempEntity("'+ann_id+'","'+entity_class_rel.toLowerCase()+'","'+entity_pk_rel+'","'+entity_type.substr(5)+'")>Delete Complete</a>'
+        html += '<a class="list-group-item" href="/apis/entities/entity/'+entity_class+'/'+entity_pk+'/edit">Goto entity</a>'
         if ($(this).data('entity-class')) {
         html += '<a class="list-group-item" onclick=GetFormAjaxHighl("'+$(this).data('entity-class')+'Form","'+entity_pk_rel+'")>Edit Entity</a>'}}
         if (entity_type == 'entities' && $(this).data('entity-class')){

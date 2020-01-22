@@ -177,7 +177,7 @@ class Annotation(models.Model):
         entity_type_app = ContentType.objects.get(model=entity_type.lower()).app_label
         ent_lst_pk = []
         user_added = self.user_added.username[:2]
-        if entity_type_app.lower() == 'relations':
+        if entity_type_app.lower() == 'apis_relations':
             for x in dir(rel_entity):
                 c = re.match('related_\w+_id', x)
                 if c:
