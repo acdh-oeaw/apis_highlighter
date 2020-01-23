@@ -4,6 +4,7 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
                 console.log('adding fields');
                 var hidden_forms = '<input type=\"hidden\" name=\"HL_start\" id=\"id_HL_start\" /> <input type=\"hidden\" name=\"HL_end\" id=\"id_HL_end\" /> <input type=\"hidden\" name=\"HL_text_id\" id=\"id_HL_text_id\" />'
                 data.form = data.form.replace('<div class=\"form-actions\">', hidden_forms+'<div class=\"form-actions\">')
+                data.form = data.form.replace(/LS_notes_refs/g, 'LS_notes_refs_high')
             };
             try {
                 if ($.ApisHigh.tt_instance["__state"] == 'stable') {
