@@ -1,7 +1,6 @@
 function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
         function add_form_highl(data, ajax) {
             if (!ajax) {
-                console.log('adding fields');
                 var hidden_forms = '<input type=\"hidden\" name=\"HL_start\" id=\"id_HL_start\" /> <input type=\"hidden\" name=\"HL_end\" id=\"id_HL_end\" /> <input type=\"hidden\" name=\"HL_text_id\" id=\"id_HL_text_id\" />'
                 data.form = data.form.replace('<div class=\"form-actions\">', hidden_forms+'<div class=\"form-actions\">')
                 data.form = data.form.replace(/LS_notes_refs/g, 'LS_notes_refs_high')
@@ -21,7 +20,6 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
                 $('#id_HL_start').val($.ApisHigh.selected_text.start);
                 $('#id_HL_end').val($.ApisHigh.selected_text.end);
                 $('#id_HL_text_id').val($.ApisHigh.selected_text.id);
-                console.log('correct run');
         };
         if (ButtonText === undefined) {
         ButtonText = 'create/modify';
@@ -36,9 +34,9 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
               .replace(new RegExp('##ENT_PK##', 'g'), $.ApisHigh.vars.instance_pk);
           new_data.form = new_data.form
               .replace(new RegExp(FormName2, 'g'), FormName);
+            new_data.form = new_data.form.replace(/LS_notes_refs/g, 'LS_notes_refs_high')
           add_form_highl(new_data, false);
         } else {
-	console.log('form not found')
 
         $.ajax({
                 type: 'POST',
@@ -49,12 +47,13 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
                   },
                 data: {'FormName':FormName,'SiteID':$.ApisHigh.vars.instance_pk,'ObjectID':ObjectID,'ButtonText':ButtonText, 'entity_type': $.ApisHigh.vars.entity_type},
                 success: function(data) {
+                    console.log(data)
+                    data.form = data.form.replace(/LS_notes_refs/g, 'LS_notes_refs_high')
                     add_form_highl(data, true);
                 }
             })
 	};
         } else {
-	console.log('posting to form endpoint')
         $.ajax({
                 type: 'POST',
                 url: $.ApisHigh.vars.urls.get_form_ajax,
@@ -64,6 +63,7 @@ function GetFormAjaxHighl(FormName, ObjectID, ButtonText) {
                   },
                 data: {'FormName':FormName,'SiteID':$.ApisHigh.vars.instance_pk,'ObjectID':ObjectID,'ButtonText':ButtonText, 'entity_type': $.ApisHigh.vars.entity_type},
                 success: function(data) {
+                    data.form = data.form.replace(/LS_notes_refs/g, 'LS_notes_refs_high')
                     add_form_highl(data, true);
                 }
             });}
