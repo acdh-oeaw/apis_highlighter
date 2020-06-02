@@ -58,6 +58,22 @@ class AnnotationProject(models.Model):
     '''
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    published = models.BooleanField(default=False)
+
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        instance = super().from_db(db, field_names, values)
+        instance._loaded_values = dict(zip(field_names, values))
+        return instance
+
+    def save(self, *args, **kwargs):
+        if self.published != self._loaded_values['published']:
+            for ann in self.annotation_set.all():
+                for ent in ann.entity_link.all():
+                    if ent.published != self.published:
+                        ent.published = self.published
+                        ent.save()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
