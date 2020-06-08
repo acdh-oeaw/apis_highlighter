@@ -67,12 +67,13 @@ class AnnotationProject(models.Model):
         return instance
 
     def save(self, *args, **kwargs):
-        if self.published != self._loaded_values['published']:
-            for ann in self.annotation_set.all():
-                for ent in ann.entity_link.all():
-                    if ent.published != self.published:
-                        ent.published = self.published
-                        ent.save()
+        if hasattr(self, '_loaded_values'):
+            if self.published != self._loaded_values['published']:
+                for ann in self.annotation_set.all():
+                    for ent in ann.entity_link.all():
+                        if ent.published != self.published:
+                            ent.published = self.published
+                            ent.save()
         super().save(*args, **kwargs)
 
     def __str__(self):
