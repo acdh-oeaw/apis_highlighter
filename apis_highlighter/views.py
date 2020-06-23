@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
-from apis_core.apis_metainfo import import Collection, Text, TempEntityClass
+from apis_core.apis_metainfo.models import Collection, Text, TempEntityClass
 
 from apis_highlighter.forms import SelectAnnotatorAgreementCollection
 if 'annotator agreement' in getattr(settings, "APIS_COMPONENTS", []):
