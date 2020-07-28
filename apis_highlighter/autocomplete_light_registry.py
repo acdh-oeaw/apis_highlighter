@@ -1,15 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import autocomplete_light.shortcuts as al
-from django.utils.encoding import force_text
-from apis_core.apis_vocabularies.models import (PersonInstitutionRelation, PersonPersonRelation, PersonPlaceRelation,
-                                 PersonEventRelation, InstitutionEventRelation, PlaceEventRelation,
-                                 RelationBaseClass, VocabsBaseClass, InstitutionInstitutionRelation,
-                                 InstitutionPlaceRelation, PersonWorkRelation, InstitutionWorkRelation,
-                                 PlaceWorkRelation, EventWorkRelation, PlacePlaceRelation)
+import copy
+import re
 
+import autocomplete_light.shortcuts as al
 import requests
-import re, copy
+from django.utils.encoding import force_text
+
+from apis_core.apis_vocabularies.models import (PersonInstitutionRelation, PersonPersonRelation, PersonPlaceRelation,
+                                                PersonEventRelation, InstitutionEventRelation, PlaceEventRelation,
+                                                InstitutionInstitutionRelation,
+                                                InstitutionPlaceRelation, PersonWorkRelation, InstitutionWorkRelation,
+                                                PlaceWorkRelation, EventWorkRelation, PlacePlaceRelation)
 
 lst_schemes = {'Oebl_brg': 'http://acdh.oeaw.ac.at/vocabs/professions/oebl/'}
 

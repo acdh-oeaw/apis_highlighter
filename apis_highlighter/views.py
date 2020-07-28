@@ -1,12 +1,16 @@
-from django.views.generic import View
-from django.shortcuts import render
-from django.utils.decorators import method_decorator
+import Collection
+import TempEntityClass
+import Text
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.conf import settings
-from apis_core.apis_metainfo import import Collection, Text, TempEntityClass
+from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.generic import View
 
+from apis_core.apis_metainfo import
 from apis_highlighter.forms import SelectAnnotatorAgreementCollection
+
 if 'annotator agreement' in getattr(settings, "APIS_COMPONENTS", []):
     from apis_core.helper_functions.inter_annotator_agreement import InternalDataAgreement
 

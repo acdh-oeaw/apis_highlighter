@@ -1,10 +1,13 @@
-from django.db import models
-from django.contrib.auth.models import User
-from gm2m import GM2MField
-import reversion
-from django.contrib.contenttypes.models import ContentType
 import re
+
+import reversion
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+from gm2m import GM2MField
+from crum import get_current_request
+from django.urls import reverse
 
 
 ##############################################
@@ -180,7 +183,7 @@ class Annotation(models.Model):
             res += '_'
         return res[:-1]
 
-    def get_html_markup(self):
+    def get_html_markup(self, include_object=False):
         if not len(self.entity_link.all()) == 1:
             return None
         rel_entity = self.entity_link.all()[0]
@@ -205,6 +208,30 @@ class Annotation(models.Model):
                                                                         self.text_id, self.pk, entity_type, rel_entity.pk,
                                                                                  ','.join(ent_lst_pk),
                                                                                  entity_type_app, user_added)
+        if include_object:
+            request = get_current_request()
+            if request is None:
+                base = getattr(settings, 'APIS_BASE_URI', 'http://to_change.com')
+                if base.endswith('/'):
+                    base = base[:-1]
+                url = f'{base}{reverse("apis:apis_api:{}-detail".format(entity_type.lower()), kwargs={"pk": rel_entity.pk},)}'
+            else:
+                url = request.build_absolute_uri(reverse(
+                    "apis:apis_api:{}-detail".format(entity_type.lower()),
+                    kwargs={"pk": rel_entity.pk},
+                ))
+            res_obj = {
+                'id': self.id,
+                'start': self.start,
+                'end': self.end,
+                'related_object': {
+                    'id': rel_entity.id,
+                    'url': url,
+                    'type': entity_type,
+                    'label': str(rel_entity)
+                }
+            }
+            return start_span, res_obj
         return start_span
 
     class Meta:
