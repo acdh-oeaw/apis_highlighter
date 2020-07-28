@@ -7,6 +7,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from django.conf import settings
+from apis_core.apis_metainfo.models import Collection, Text, TempEntityClass
 
 from apis_core.apis_metainfo import
 from apis_highlighter.forms import SelectAnnotatorAgreementCollection
