@@ -183,6 +183,13 @@ class Annotation(models.Model):
             res += '_'
         return res[:-1]
 
+    def get_related_entity(self):
+        rel = self.entity_link.all()
+        if not len(rel) == 1:
+            return None
+        else:
+            return rel[0]
+
     def get_html_markup(self, include_object=False):
         if not len(self.entity_link.all()) == 1:
             return None
