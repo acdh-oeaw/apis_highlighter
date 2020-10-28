@@ -3,7 +3,7 @@ trigger_build:
      refs:
          - master
   stage: deploy
-  trigger: acdh-oeaw/apis/apis-webpage-base
+  trigger: acdh-oeaw/apis/apis-docker
   variables:
       APIS_TRIGGERD_BY: 'apis-core'
       APIS_VERSION: '0.9'
