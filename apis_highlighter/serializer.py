@@ -58,12 +58,10 @@ class AnnotationProjectSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class annotationSerializer(serializers.HyperlinkedModelSerializer):
-    parent = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    user_added = UserAccSerializer(many=False, read_only=True)
 
     class Meta:
         model = Annotation
-        fields = ('id', 'start', 'end', 'text', 'user_added', 'parent', 'annotation_project')
+        fields = ('id', 'start', 'end')
 
 
 class highlightText(serializers.BaseSerializer):
