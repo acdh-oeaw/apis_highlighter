@@ -36,11 +36,11 @@ class HighlighterAPITestCase(TestCase):
         cls.annotation_3 = Annotation.objects.create(
             text=cls.text, start=start_2, end=end_2
         )
-        pers = Person.objects.create()
+        pers = Person.objects.first()
         cls.annotation.entity_link.add(pers)
-        inst = Institution.objects.create()
+        inst = Institution.objects.first()
         cls.annotation_2.entity_link.add(inst)
-        ev = Event.objects.create()
+        ev = Event.objects.first()
         cls.annotation_3.entity_link.add(ev)
         print(cls.annotation)
 
