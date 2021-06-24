@@ -3,11 +3,13 @@ import re
 import reversion
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from gm2m import GM2MField
 from crum import get_current_request
 from django.urls import reverse
+from apis_core.helper_functions.ContentType import GetContentTypes
 
 
 ##############################################
@@ -86,11 +88,28 @@ class AnnotationProject(models.Model):
     def save(self, *args, **kwargs):
         if hasattr(self, "_loaded_values"):
             if self.published != self._loaded_values["published"]:
-                for ann in self.annotation_set.all():
-                    for ent in ann.entity_link.all():
-                        if ent.published != self.published:
-                            ent.published = self.published
-                            ent.save()
+
+
+                # EL OLD:
+                # for ann in self.annotation_set.all():
+
+                # EL NEW:
+                for ann in self.annotation_set_new.all():
+
+
+                    # EL OLD:
+                    # for ent in ann.entity_link.all():
+                    #     if ent.published != self.published:
+                    #         ent.published = self.published
+                    #         ent.save()
+
+                    # EL NEW:
+                    ent = ann.entity_link_new
+                    if ent is not None and ent.published != self.published:
+                        ent.published = self.published
+                        ent.save()
+
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -98,6 +117,33 @@ class AnnotationProject(models.Model):
 
     class Meta:
         db_table = "highlighter_annotationproject"
+
+
+# EL NEW:
+class CustomGenericManager(models.Manager):
+
+    def filter(self, *args, **kwargs):
+
+        for key in kwargs.keys():
+            if "entity_link_new_" in key:
+                raise Exception(
+                    "'entity_link_new' is a custom filter work-around and can not handle django's "
+                    "relation resolver. It's only possible to use 'entity_link_new' to filter for "
+                    "exactly one related model instance! "
+                    "(e.g. Annotation.objects.filter(entity_link_new=person))"
+                )
+
+        if "entity_link_new" in kwargs:
+            model_instance = kwargs.pop("entity_link_new")
+            if model_instance is None:
+                kwargs["content_type"] = None
+                kwargs["object_id"] = None
+            else:
+                kwargs["content_type"] = \
+                    GetContentTypes.get_content_type_of_class_or_instance(model_class_or_instance=model_instance)
+                kwargs["object_id"] = model_instance.pk
+
+        return super().filter(*args, **kwargs)
 
 
 @reversion.register()
@@ -133,9 +179,21 @@ class Annotation(models.Model):
     status_choices = (("del", "deleted"), ("ap", "approved"))
     start = models.PositiveIntegerField()  # number of string to start highlight
     end = models.PositiveIntegerField()  # number of string to end highlight
+
+
+    # EL OLD:
     entity_link = GM2MField(
         *set_highlighter
     )  # generic field to store the relation object
+
+    # EL NEW:
+    content_type = models.ForeignKey(ContentType, related_name="gfk_from", on_delete=models.CASCADE, null=True)
+    object_id = models.PositiveIntegerField(null=True)
+    entity_link_new = GenericForeignKey("content_type", "object_id")
+
+    objects = CustomGenericManager()
+
+
     entity_candidate = models.ManyToManyField("apis_metainfo.UriCandidate", blank=True)
     orig_string = models.CharField(
         max_length=255, blank=True, null=True
@@ -190,53 +248,110 @@ class Annotation(models.Model):
             if f in matching.keys():
                 res += str(getattr(self, matching[f]))
             else:
-                ent_link = self.entity_link.all()
-                if len(ent_link) > 0:
+
+
+                # EL OLD:
+                # ent_link = self.entity_link.all()
+                # if len(ent_link) > 0:
+                #     cont_lst = str(
+                #         ContentType.objects.get_for_model(ent_link[0])
+                #     ).split()
+                #     if f == "ent":
+                #         res += "".join(cont_lst)
+                #     elif f == "entid":
+                #         for cont in cont_lst:
+                #             if hasattr(ent_link[0], "related_" + cont.strip()):
+                #                 res += str(
+                #                     getattr(
+                #                         ent_link[0], "related_" + cont.strip() + "_id"
+                #                     )
+                #                 )
+                #             elif hasattr(ent_link[0], "related_" + cont.strip() + "A"):
+                #                 res += str(
+                #                     getattr(
+                #                         ent_link[0], "related_" + cont.strip() + "A_id"
+                #                     )
+                #                 )
+                #             elif hasattr(ent_link[0], "related_" + cont.strip() + "B"):
+                #                 res += str(
+                #                     getattr(
+                #                         ent_link[0], "related_" + cont.strip() + "B_id"
+                #                     )
+                #                 )
+                #             res += "-"
+                #         res = res[:-1]
+                #     elif f == 'rel':
+                #         res += str(getattr(ent_link[0], 'relation_type_id'))
+                # else:
+                #     res += 'NONE'
+
+                # EL NEW:
+                ent_link = self.entity_link_new
+                if ent_link is not None:
                     cont_lst = str(
-                        ContentType.objects.get_for_model(ent_link[0])
+                        ContentType.objects.get_for_model(ent_link)
                     ).split()
                     if f == "ent":
                         res += "".join(cont_lst)
                     elif f == "entid":
                         for cont in cont_lst:
-                            if hasattr(ent_link[0], "related_" + cont.strip()):
+                            if hasattr(ent_link, "related_" + cont.strip()):
                                 res += str(
                                     getattr(
-                                        ent_link[0], "related_" + cont.strip() + "_id"
+                                        ent_link, "related_" + cont.strip() + "_id"
                                     )
                                 )
-                            elif hasattr(ent_link[0], "related_" + cont.strip() + "A"):
+                            elif hasattr(ent_link, "related_" + cont.strip() + "A"):
                                 res += str(
                                     getattr(
-                                        ent_link[0], "related_" + cont.strip() + "A_id"
+                                        ent_link, "related_" + cont.strip() + "A_id"
                                     )
                                 )
-                            elif hasattr(ent_link[0], "related_" + cont.strip() + "B"):
+                            elif hasattr(ent_link, "related_" + cont.strip() + "B"):
                                 res += str(
                                     getattr(
-                                        ent_link[0], "related_" + cont.strip() + "B_id"
+                                        ent_link, "related_" + cont.strip() + "B_id"
                                     )
                                 )
                             res += "-"
                         res = res[:-1]
                     elif f == "rel":
-                        res += str(getattr(ent_link[0], "relation_type_id"))
+                        res += str(getattr(ent_link, "relation_type_id"))
                 else:
                     res += "NONE"
+
+
             res += "_"
         return res[:-1]
 
     def get_related_entity(self):
-        rel = self.entity_link.all()
-        if not len(rel) == 1:
-            return None
-        else:
-            return rel[0]
+
+
+        # EL OLD:
+        # rel = self.entity_link.all()
+        # if not len(rel) == 1:
+        #     return None
+        # else:
+        #     return rel[0]
+
+        # EL NEW:
+        return self.entity_link_new
+
 
     def get_html_markup(self, include_object=False):
-        if not len(self.entity_link.all()) == 1:
+
+
+        # EL OLD:
+        # if not len(self.entity_link.all()) == 1:
+        #     return None
+        # rel_entity = self.entity_link.all()[0]
+
+        # EL NEW:
+        if self.entity_link_new is None:
             return None
-        rel_entity = self.entity_link.all()[0]
+        rel_entity = self.entity_link_new
+
+
         if hasattr(rel_entity, "relation_type"):
             entity_kind = str(rel_entity.relation_type.pk)
         elif hasattr(rel_entity, "kind"):

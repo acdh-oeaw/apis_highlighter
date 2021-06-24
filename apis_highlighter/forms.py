@@ -165,12 +165,22 @@ class PersonHighlighterForm(BaseEntityHighlighterForm):
         p = Person.get_or_create_uri(cd['person_uri'])
         if not p:
             p = GenericRDFParser(cd['person_uri'], 'Person').get_or_create()
-        if len(x.entity_link.all()) > 0:
-            if p != x.entity_link.all()[0]:
-                x.entity_link.clear()
-                x.entity_link.add(p)
-        else:
-            x.entity_link.add(p)
+
+
+        # EL OLD:
+        # if len(x.entity_link.all()) > 0:
+        #     if p != x.entity_link.all()[0]:
+        #         x.entity_link.clear()
+        #         x.entity_link.add(p)
+        # else:
+        #     x.entity_link.add(p)
+
+        # EL NEW:
+        x.entity_link_new = p
+        x.save()
+
+
+
         return p
 
     def __init__(self, *args, **kwargs):
@@ -178,7 +188,16 @@ class PersonHighlighterForm(BaseEntityHighlighterForm):
         self.helper.form_class = 'PersonEntityForm'
         if self.instance:
             a = self.instance
-            ent = a.entity_link.all()[0]
+
+
+            # EL OLD:
+            # ent = a.entity_link.all()[0]
+
+            # EL NEW:
+            ent = a.entity_link_new
+
+
+
             self.fields['person'].initial = ent.name+', '+ent.first_name
             self.fields['person_uri'].initial = Uri.objects.filter(entity=ent)[0].uri
 
@@ -193,12 +212,21 @@ class PlaceHighlighterForm(BaseEntityHighlighterForm):
         p = Place.get_or_create_uri(cd['place_uri'])
         if not p:
             p = GenericRDFParser(cd['place_uri'], 'Place').get_or_create()
-        if len(x.entity_link.all()) > 0:
-            if p != x.entity_link.all()[0]:
-                x.entity_link.clear()
-                x.entity_link.add(p)
-        else:
-            x.entity_link.add(p)
+
+
+        # EL OLD:
+        # if len(x.entity_link.all()) > 0:
+        #     if p != x.entity_link.all()[0]:
+        #         x.entity_link.clear()
+        #         x.entity_link.add(p)
+        # else:
+        #     x.entity_link.add(p)
+
+        # EL NEW:
+        x.entity_link_new = p
+        x.save()
+
+
         return p
 
     def __init__(self, *args, **kwargs):
@@ -206,7 +234,15 @@ class PlaceHighlighterForm(BaseEntityHighlighterForm):
         self.helper.form_class = 'PlaceEntityForm'
         if self.instance:
             a = self.instance
-            ent = a.entity_link.all()[0]
+
+
+            # EL OLD:
+            # ent = a.entity_link.all()[0]
+
+            # EL NEW:
+            ent = a.entity_link_new
+
+
             self.fields['place'].initial = ent.name
             self.fields['place_uri'].initial = Uri.objects.filter(entity=ent)[0].uri
 
@@ -217,7 +253,16 @@ class SundayHighlighterForm(BaseEntityHighlighterForm):
         x = super(SundayHighlighterForm, self).save(*args, **kwargs)
         cd = self.cleaned_data
         p = ContentType.objects.get(app_label='apis_vocabularies', model='sundayrepresentations').model_class().objects.get(pk=cd['sunday_rep'])
-        x.entity_link.add(p)
+
+
+        # EL OLD:
+        # x.entity_link.add(p)
+
+        # EL NEW:
+        x.entity_link_new = p
+        x.save()
+
+
         return p
 
     def __init__(self, *args, **kwargs):
@@ -235,7 +280,15 @@ class SundayHighlighterForm(BaseEntityHighlighterForm):
 
         if self.instance:
             a = self.instance
-            ent = a.entity_link.all()[0]
+
+
+            # EL OLD:
+            # ent = a.entity_link.all()[0]
+
+            # EL NEW:
+            ent = a.entity_link_new
+
+
             self.fields['sunday_rep'].initial = (ent.pk, ent.name)
 
 
@@ -259,7 +312,16 @@ class PlaceEntityHighlighterForm(forms.Form):
             user_added=self.request.user,
             annotation_project_id=int(self.request.session.get('annotation_project', 1)))
         a.save()
-        a.entity_link.add(pl)
+
+
+        # EL OLD:
+        # a.entity_link.add(pl)
+
+        # EL NEW:
+        a.entity_link_new = pl
+        a.save()
+
+
         return a
 
     def __init__(self, *args, **kwargs):
@@ -290,7 +352,16 @@ class AddRelationHighlighterBaseForm(forms.Form):
             text=txt,
             user_added=self.request.user)
         self.ann.save()
-        self.ann.entity_link.add(ent)
+
+
+        # EL OLD:
+        # self.ann.entity_link.add(ent)
+
+        # EL NEW:
+        self.ann.entity_link_new = ent
+        self.ann.save()
+
+
         return self.ann
 
 
