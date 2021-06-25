@@ -37,35 +37,14 @@ class HighlighterAPITestCase(TestCase):
             text=cls.text, start=start_2, end=end_2
         )
         pers = Person.objects.first()
-
-
-        # EL OLD:
-        # cls.annotation.entity_link.add(pers)
-        # EL NEW:
-        cls.annotation.entity_link_new = pers
+        cls.annotation.entity_link = pers
         cls.annotation.save()
-
-
         inst = Institution.objects.first()
-
-
-        # EL OLD:
-        # cls.annotation_2.entity_link.add(inst)
-        # EL NEW:
-        cls.annotation_2.entity_link_new = inst
+        cls.annotation_2.entity_link = inst
         cls.annotation_2.save()
-
-
         ev = Event.objects.first()
-
-
-        # EL OLD:
-        # cls.annotation_3.entity_link.add(ev)
-        # EL NEW:
-        cls.annotation_3.entity_link_new = ev
+        cls.annotation_3.entity_link = ev
         cls.annotation_3.save()
-
-
         print(cls.annotation)
 
     def test_get(self):

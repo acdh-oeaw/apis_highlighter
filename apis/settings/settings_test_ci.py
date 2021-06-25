@@ -50,8 +50,15 @@ INSTALLED_APPS = [
     "apis_highlighter",
 ]
 
-DATABASES = {}
-
-DATABASES["default"] = dj_database_url.config(conn_max_age=600)
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': 'apis_db_dev',
+		'USER': 'apis_user',
+		'PASSWORD': 'apis_password',
+		'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+		'PORT': '3306',
+	}
+}
 
 LANGUAGE_CODE = "de"
