@@ -362,4 +362,4 @@ class HighlighterAPITestCase(TestCase):
 
             print(f"starting mutation iteration: {mutation_iteration}")
 
-    #         randomize_and_compare(text_object, mutation_iteration)
+            randomize_and_compare(text_object, mutation_iteration)
