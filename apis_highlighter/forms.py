@@ -251,7 +251,6 @@ class PlaceEntityHighlighterForm(forms.Form):
             text=txt,
             user_added=self.request.user,
             annotation_project_id=int(self.request.session.get('annotation_project', 1)))
-        a.save()
         a.entity_link = pl
         a.save()
         return a
