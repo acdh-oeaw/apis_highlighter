@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from gm2m import GM2MField
 from crum import get_current_request
 from django.urls import reverse
 from apis_core.helper_functions.ContentType import GetContentTypes
