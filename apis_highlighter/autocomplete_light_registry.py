@@ -167,13 +167,13 @@ class VocabsAutocompleteBase2(al.AutocompleteModelTemplate):
 
     def choice_label(self, choice):
         # if type(choice) is VocabsBaseClass:
-        #     choice = RelationBaseClass.objects.get(pk=choice.pk)
+        #     choice = Property.objects.get(pk=choice.pk)
         # d = choice
         # res = getattr(choice, self.choice_attr)
         # while d.parent_class:
         #     f = d.parent_class
         #     if type(f) is VocabsBaseClass:
-        #         f = RelationBaseClass.objects.get(pk=f.pk)
+        #         f = Property.objects.get(pk=f.pk)
         #     res = getattr(f, self.choice_attr) + ' >> ' + res
         #     d = f
         if self.reverse:

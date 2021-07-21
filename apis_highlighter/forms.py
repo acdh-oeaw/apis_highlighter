@@ -180,7 +180,7 @@ class PersonHighlighterForm(BaseEntityHighlighterForm):
             a = self.instance
             ent = a.entity_link.all()[0]
             self.fields['person'].initial = ent.name+', '+ent.first_name
-            self.fields['person_uri'].initial = Uri.objects.filter(entity=ent)[0].uri
+            self.fields['person_uri'].initial = Uri.objects.filter(root_object=ent)[0].uri
 
 
 class PlaceHighlighterForm(BaseEntityHighlighterForm):
@@ -208,7 +208,7 @@ class PlaceHighlighterForm(BaseEntityHighlighterForm):
             a = self.instance
             ent = a.entity_link.all()[0]
             self.fields['place'].initial = ent.name
-            self.fields['place_uri'].initial = Uri.objects.filter(entity=ent)[0].uri
+            self.fields['place_uri'].initial = Uri.objects.filter(root_object=ent)[0].uri
 
 
 class SundayHighlighterForm(BaseEntityHighlighterForm):
