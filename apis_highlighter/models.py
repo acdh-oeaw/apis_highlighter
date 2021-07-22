@@ -107,7 +107,6 @@ class AnnotationProject(models.Model):
 class Annotation(models.Model):
     """Class storing highlights in full-texts"""
 
-    # TODO __sresch__ : confirm that this works
     class CustomGenericManager(models.Manager):
 
         def filter(self, *args, **kwargs):
