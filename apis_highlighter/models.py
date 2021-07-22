@@ -101,35 +101,37 @@ class AnnotationProject(models.Model):
         db_table = "highlighter_annotationproject"
 
 
-class CustomGenericManager(models.Manager):
-
-    def filter(self, *args, **kwargs):
-
-        for key in kwargs.keys():
-            if "entity_link_" in key:
-                raise Exception(
-                    "'entity_link' is a custom filter work-around and can not handle django's "
-                    "relation resolver. It's only possible to use 'entity_link' to filter for "
-                    "exactly one related model instance! "
-                    "(e.g. Annotation.objects.filter(entity_link=person))"
-                )
-
-        if "entity_link" in kwargs:
-            model_instance = kwargs.pop("entity_link")
-            if model_instance is None:
-                kwargs["content_type"] = None
-                kwargs["object_id"] = None
-            else:
-                kwargs["content_type"] = \
-                    GetContentTypes.get_content_type_of_class_or_instance(model_class_or_instance=model_instance)
-                kwargs["object_id"] = model_instance.pk
-
-        return super().filter(*args, **kwargs)
 
 
 @reversion.register()
 class Annotation(models.Model):
     """Class storing highlights in full-texts"""
+
+    # TODO __sresch__ : confirm that this works
+    class CustomGenericManager(models.Manager):
+
+        def filter(self, *args, **kwargs):
+
+            for key in kwargs.keys():
+                if "entity_link_" in key:
+                    raise Exception(
+                        "'entity_link' is a custom filter work-around and can not handle django's "
+                        "relation resolver. It's only possible to use 'entity_link' to filter for "
+                        "exactly one related model instance! "
+                        "(e.g. Annotation.objects.filter(entity_link=person))"
+                    )
+
+            if "entity_link" in kwargs:
+                model_instance = kwargs.pop("entity_link")
+                if model_instance is None:
+                    kwargs["content_type"] = None
+                    kwargs["object_id"] = None
+                else:
+                    kwargs["content_type"] = \
+                        GetContentTypes.get_content_type_of_class_or_instance(model_class_or_instance=model_instance)
+                    kwargs["object_id"] = model_instance.pk
+
+            return super().filter(*args, **kwargs)
 
     set_highlighter = getattr(
         settings,
