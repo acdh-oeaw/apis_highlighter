@@ -72,7 +72,8 @@ def highlight_text_new(*args, **kwargs):
                 start, end, obj.pk
             )
             for an2 in an:
-                res_annotations.append(an2.get_html_markup(include_object=True))
+                _, res_ann = an2.get_html_markup(include_object=True)
+                res_annotations.append(res_ann)
         else:
             start_span, res_ann = an[0].get_html_markup(include_object=True)
             res_annotations.append(res_ann)
