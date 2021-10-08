@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 
 from apis_core.apis_vocabularies.serializers import UserAccSerializer
-from apis_core.helper_functions.highlighter import highlight_text, highlight_textTEI
+from apis_highlighter.highlighter import highlight_text, highlight_textTEI
 from .models import Annotation, Project, TextHigh, MenuEntry, VocabularyAPI, AnnotationProject
 
 
