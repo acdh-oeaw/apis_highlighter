@@ -44,7 +44,7 @@ def highlight_text_new(*args, **kwargs):
         # c_end = re.findall(r"[\r\n]+", obj.text[: an.end])
         # if len(c_end) > 0:
         #     an.end += len("".join(c_end))
-        if an.start >= t_start and an.start <= t_end:
+        if an.start >= t_start and an.start <= t_end and len(lst_annot) > 0:
             lst_annot[-1].append(an)
         else:
             lst_annot.append(
