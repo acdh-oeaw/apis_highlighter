@@ -175,7 +175,11 @@ class PersonHighlighterForm(BaseEntityHighlighterForm):
         if self.instance:
             a = self.instance
             ent = a.entity_link
-            self.fields['person'].initial = ent.name+', '+ent.first_name
+            if hasattr(ent, "first_name"):
+                initial_name = ent.name+', '+ ent.first_name
+            else:
+                initial_name = ent.name
+            self.fields['person'].initial = initial_name
             self.fields['person_uri'].initial = Uri.objects.filter(entity=ent)[0].uri
 
 
