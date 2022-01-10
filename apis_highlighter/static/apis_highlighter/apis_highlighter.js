@@ -286,12 +286,16 @@ function get_selected_text(txt_id) {
     var element = document.getElementById(txt_id);
     var start = 0, end = 0;
     var sel, range, priorRange;
+    console.log("js fired")
     if (typeof window.getSelection != "undefined") {
         range = window.getSelection().getRangeAt(0);
         priorRange = range.cloneRange();
         priorRange.selectNodeContents(element);
         priorRange.setEnd(range.startContainer, range.startOffset);
-        start = priorRange.toString().length;
+        shadow_selection = priorRange.cloneContents()
+        console.log(shadow_selection)
+        const num_brs = shadow_selection.querySelectorAll("br").length
+        start = priorRange.toString().length + num_brs*2;
         end = start + range.toString().length;
     } else if (typeof document.selection != "undefined" &&
             (sel = document.selection).type != "Control") {
@@ -299,7 +303,11 @@ function get_selected_text(txt_id) {
         priorRange = document.body.createTextRange();
         priorRange.moveToElementText(element);
         priorRange.setEndPoint("EndToStart", range);
-        start = priorRange.text.length;
+        shadow_selection = priorRange.cloneContents()
+        console.log(shadow_selection)
+        console.log(shadow_selection.querySelectorAll("br").length)
+        const num_brs = shadow_selection.querySelectorAll("br").length
+        start = priorRange.text.length + num_brs*2;
         end = start + range.text.length;
     }
     return {

@@ -9,34 +9,35 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.conf import settings
 from apis_core.apis_metainfo.models import Collection, Text, TempEntityClass
-
-from apis_core.apis_metainfo import
 from apis_highlighter.forms import SelectAnnotatorAgreementCollection
 
-if 'annotator agreement' in getattr(settings, "APIS_COMPONENTS", []):
-    from apis_core.helper_functions.inter_annotator_agreement import InternalDataAgreement
+if "annotator agreement" in getattr(settings, "APIS_COMPONENTS", []):
+    from apis_core.helper_functions.inter_annotator_agreement import (
+        InternalDataAgreement,
+    )
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class ComputeAgreement(View):
-
     def get(self, request):
         form = SelectAnnotatorAgreementCollection()
-        return render(request, 'apis_highlighter/calculate_agreement.html', {'form': form})
+        return render(
+            request, "apis_highlighter/calculate_agreement.html", {"form": form}
+        )
 
     def post(self, request, *args, **kwargs):
         form = SelectAnnotatorAgreementCollection(request.POST)
         if form.is_valid():
-            gold_standard = form.cleaned_data.get('gold_standard')
-            user_group = form.cleaned_data.get('user_group')
-            metrics = form.cleaned_data.get('metrics')
-            format_string = form.cleaned_data.get('format_string')
-            ann_proj_pk = form.cleaned_data.get('anno_proj')
-            collection = form.cleaned_data.get('collection')
-            kind_instance = form.cleaned_data.get('kind_instance')
-            text_type = form.cleaned_data.get('text_type')
-            met_dict = dict(form.fields['metrics'].choices)
-            title1 = met_dict[form.cleaned_data['metrics']]
+            gold_standard = form.cleaned_data.get("gold_standard")
+            user_group = form.cleaned_data.get("user_group")
+            metrics = form.cleaned_data.get("metrics")
+            format_string = form.cleaned_data.get("format_string")
+            ann_proj_pk = form.cleaned_data.get("anno_proj")
+            collection = form.cleaned_data.get("collection")
+            kind_instance = form.cleaned_data.get("kind_instance")
+            text_type = form.cleaned_data.get("text_type")
+            met_dict = dict(form.fields["metrics"].choices)
+            title1 = met_dict[form.cleaned_data["metrics"]]
             txt = Text.objects.all()
             ent = False
             if kind_instance:
@@ -51,8 +52,16 @@ class ComputeAgreement(View):
             if text_type:
                 txt = txt.filter(kind_id__in=text_type)
             tab1, tab2 = InternalDataAgreement(
-                txt, ann_proj_pk, user_group,
-                gold_standard=gold_standard, metrics=metrics,
-                combine=True, format_string=format_string).get_html_table()
-            return render(request, 'apis_highlighter/calculate_agreement.html', {
-                'form': form, 'tab1': tab1, 'tab2': tab2, 'title1': title1})
+                txt,
+                ann_proj_pk,
+                user_group,
+                gold_standard=gold_standard,
+                metrics=metrics,
+                combine=True,
+                format_string=format_string,
+            ).get_html_table()
+            return render(
+                request,
+                "apis_highlighter/calculate_agreement.html",
+                {"form": form, "tab1": tab1, "tab2": tab2, "title1": title1},
+            )

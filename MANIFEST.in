@@ -2,3 +2,5 @@ include LICENSE
 include README.rst
 recursive-include apis_highlighter/templates/apis_highlighter *
 recursive-include apis_highlighter/static/apis_highlighter *
+exclude apis
+exclude manage.py

@@ -3,8 +3,8 @@ from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 
 from apis_core.apis_vocabularies.serializers import UserAccSerializer
-from apis_core.helper_functions.highlighter import highlight_text, highlight_textTEI
-from .models import Annotation, Project, TextHigh, MenuEntry, VocabularyAPI
+from apis_highlighter.highlighter import highlight_text, highlight_textTEI
+from .models import Annotation, Project, TextHigh, MenuEntry, VocabularyAPI, AnnotationProject
 
 
 class JSONResponse(HttpResponse):
@@ -15,15 +15,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
-
-
-class annotationSerializer(serializers.HyperlinkedModelSerializer):
-    """Serializer for the Annotation model.
-    """
-
-    class Meta:
-        model = Annotation
-        fields = ('start', 'end', 'uri')
 
 
 class texthighSerializer(serializers.HyperlinkedModelSerializer):
@@ -59,13 +50,18 @@ class projectSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'base_url', 'store_text', 'texthigh_set', 'menuentry_set')
 
 
+class AnnotationProjectSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = AnnotationProject
+        fields = ('id', 'name')
+
+
 class annotationSerializer(serializers.HyperlinkedModelSerializer):
-    parent = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    user_added = UserAccSerializer(many=False, read_only=True)
 
     class Meta:
         model = Annotation
-        fields = ('start', 'end', 'text', 'user_added', 'parent')
+        fields = ('id', 'start', 'end')
 
 
 class highlightText(serializers.BaseSerializer):
