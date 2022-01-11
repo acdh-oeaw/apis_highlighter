@@ -135,28 +135,7 @@ class Annotation(models.Model):
     set_highlighter = getattr(
         settings,
         "APIS_HIGHLIGHTER_ENTITIES",
-        (
-            "apis_entities.Person",
-            "apis_entities.Institution",
-            "apis_entities.Place",
-            "apis_entities.Event",
-            "apis_entities.Work",
-            "apis_relations.PersonPerson",
-            "apis_relations.PersonPlace",
-            "apis_relations.PersonInstitution",
-            "apis_relations.PersonEvent",
-            "apis_relations.PersonWork",
-            "apis_relations.InstitutionPlace",
-            "apis_relations.InstitutionEvent",
-            "apis_relations.InstitutionWork",
-            "apis_relations.InstitutionInstitution",
-            "apis_relations.PlaceEvent",
-            "apis_relations.PlaceWork",
-            "apis_relations.PlacePlace",
-            "apis_relations.EventWork",
-            "apis_relations.EventEvent",
-            "apis_relations.WorkWork",
-        ),
+        None
     )
     status_choices = (("del", "deleted"), ("ap", "approved"))
     start = models.PositiveIntegerField()  # number of string to start highlight
