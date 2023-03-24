@@ -8,7 +8,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from crum import get_current_request
 from django.urls import reverse
-from apis_core.helper_functions.ContentType import GetContentTypes
 
 
 ##############################################
@@ -126,8 +125,7 @@ class Annotation(models.Model):
                     kwargs["content_type"] = None
                     kwargs["object_id"] = None
                 else:
-                    kwargs["content_type"] = \
-                        GetContentTypes.get_content_type_of_class_or_instance(model_class_or_instance=model_instance)
+                    kwargs["content_type"] = model_instance.self_contenttype
                     kwargs["object_id"] = model_instance.pk
 
             return super().filter(*args, **kwargs)

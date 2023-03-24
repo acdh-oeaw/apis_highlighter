@@ -175,7 +175,6 @@ class PersonHighlighterForm(BaseEntityHighlighterForm):
         if self.instance:
             a = self.instance
             ent = a.entity_link
-            # TODO RDF: remove "first_name" check, move to ontology specifics
             if hasattr(ent, "first_name"):
                 initial_name = ent.name+', '+ ent.first_name
             else:
