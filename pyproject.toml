@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "apis-highlighter"
-version = "0.9.0"
+version = "0.9.1"
 description = "Highlighter module for annotations in APIS framework"
 authors = ["Matthias Schlögl <m.schloegl@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = ">=3.6, <3.9"
+python = ">=3.6, <3.11"
 apis-core = ">=0.16.0"
 
 [tool.poetry.dev-dependencies]
