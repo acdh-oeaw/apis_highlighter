@@ -6,7 +6,7 @@ authors = ["Matthias Schlögl <m.schloegl@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = ">=3.6, <3.9"
+python = ">=3.6, <3.12"
 apis-core = ">=0.16.0"
 
 [tool.poetry.dev-dependencies]
