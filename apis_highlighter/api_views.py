@@ -7,8 +7,8 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from apis_core.apis_metainfo.api_renderers import TEIBaseRenderer
-from apis_core.apis_metainfo.models import Text
-from apis_core.helper_functions.inter_annotator_agreement import InternalDataAgreement
+#from apis_core.apis_metainfo.models import Text
+#from apis_core.helper_functions.inter_annotator_agreement import InternalDataAgreement
 from .models import Project, TextHigh, MenuEntry, VocabularyAPI, Annotation
 from .serializer import (
     projectSerializer, texthighSerializer,

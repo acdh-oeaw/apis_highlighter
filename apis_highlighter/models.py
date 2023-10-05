@@ -138,15 +138,23 @@ class Annotation(models.Model):
     status_choices = (("del", "deleted"), ("ap", "approved"))
     start = models.PositiveIntegerField()  # number of string to start highlight
     end = models.PositiveIntegerField()  # number of string to end highlight
+
+    # where the annotation points to
     content_type = models.ForeignKey(ContentType, related_name="gfk_from", on_delete=models.CASCADE, null=True)
     object_id = models.PositiveIntegerField(null=True)
     entity_link = GenericForeignKey("content_type", "object_id")
+
     objects = CustomGenericManager()
-    entity_candidate = models.ManyToManyField("apis_metainfo.UriCandidate", blank=True)
+    #entity_candidate = models.ManyToManyField("apis_metainfo.UriCandidate", blank=True)
     orig_string = models.CharField(
         max_length=255, blank=True, null=True
     )  # string originally highlighted
-    text = models.ForeignKey("apis_metainfo.Text", on_delete=models.CASCADE)
+
+    # the model containing the text that we annotate
+    text_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
+    text_object_id = models.PositiveIntegerField(null=True)
+    text = GenericForeignKey("text_content_type", "text_object_id")
+
     parent = models.ForeignKey(
         "self",
         related_name="parent_annotation",

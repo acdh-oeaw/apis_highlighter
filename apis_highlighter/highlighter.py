@@ -2,7 +2,7 @@ import re
 
 from django.contrib.contenttypes.models import ContentType
 
-from apis_core.apis_metainfo.models import Text
+#from apis_core.apis_metainfo.models import Text
 from apis_highlighter.models import Annotation
 
 
